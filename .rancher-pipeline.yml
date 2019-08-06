@@ -1,0 +1,21 @@
+stages:
+- name: image and deploy
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: factorio-server:0.16.51
+      pushRemote: true
+      registry: docker.jaebae.net
+  when:
+    branch: {}
+    event: {}
+- name: deploy app
+  steps:
+  - applyYamlConfig:
+      path: ./deployment.yaml
+timeout: 60
+branch:
+  include:
+  - master
+notification: {}

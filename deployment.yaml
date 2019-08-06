@@ -1,0 +1,26 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: factorio-server-deployment
+spec:
+  revisionHistoryLimit: 5
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      app: factorio-server      
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: factorio-server
+    spec:
+      containers:
+        - name: factorio-server
+          image: docker.jaebae.net/factorio-server:0.16.51
+      imagePullSecrets:
+        - name: docker-jaebae-net
