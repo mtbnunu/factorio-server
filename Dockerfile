@@ -13,6 +13,9 @@ RUN apk add --no-cache curl tar unzip nginx xz
 
 WORKDIR /opt/
 
+COPY "init.sh" "/opt/init.sh"
+COPY "nginx.conf" "/etc/nginx/nginx.conf"
+
 RUN curl -s -L -S -k https://www.factorio.com/get-download/$FACTORIO_VERSION/headless/linux64 -o /tmp/factorio_$FACTORIO_VERSION.tar.xz && \
     tar Jxf /tmp/factorio_$FACTORIO_VERSION.tar.xz && \
     rm /tmp/factorio_$FACTORIO_VERSION.tar.xz && \
@@ -20,10 +23,10 @@ RUN curl -s -L -S -k https://www.factorio.com/get-download/$FACTORIO_VERSION/hea
     unzip -qq /tmp/factorio-server-manager-linux_$MANAGER_VERSION.zip && \
     rm /tmp/factorio-server-manager-linux_$MANAGER_VERSION.zip && \
     mkdir -p /run/nginx && \
-    chown nginx:root /var/lib/nginx
+    chown nginx:root /var/lib/nginx && \
+    chmod ugo=rwx /opt/init.sh
 
-COPY "init.sh" "/opt/init.sh"
-COPY "nginx.conf" "/etc/nginx/nginx.conf"
+
 
 EXPOSE 80/tcp 34190-34200/udp
 
